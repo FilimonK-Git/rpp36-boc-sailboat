@@ -17,7 +17,7 @@ class Metrics extends React.Component {
     this.state = {
       allData: [],
       categoriesANDcolor: [],
-      categories: [], // NOT RESETTING when time/cat changes; sticking only for shop catg
+      categories: ["All"], // the dropdown sticking to 'ALL' even though data is rendewred correctly
       timeFrame: "Today",
       category: "All",
       totalTime: "0 min",
@@ -109,8 +109,20 @@ class Metrics extends React.Component {
         catgDurations.totalTimeSpent = totalTimeSpent;
         let totalTime = secondsToHms(catgDurations.totalTimeSpent);
 
+        let sortedCatg = [this.state.category];
+        for (let catg of categories) {
+          if (catg !== this.state.category) {
+            sortedCatg.push(catg);
+          }
+        }
+
         // console.log("in cdm:", totalTime);
-        this.setState({ categoriesANDcolor, categories, allData, totalTime });
+        this.setState({
+          categoriesANDcolor,
+          categories: sortedCatg,
+          allData,
+          totalTime,
+        });
       });
   }
 
@@ -135,6 +147,7 @@ class Metrics extends React.Component {
             categories.push(cat.category);
           }
         }
+        // console.log("XX", categories);
 
         let chartLegend = [];
         let chartColors = [];
@@ -198,9 +211,21 @@ class Metrics extends React.Component {
         catgDurations.totalTimeSpent = totalTimeSpent;
         let totalTime = secondsToHms(catgDurations.totalTimeSpent);
 
+        // sort categories (all i need to for it to start with curr category then populate the rest)
+        // let sortedCatg = [input];
+        // for (let catg of categories) {
+        //   if (catg !== input) {
+        //     sortedCatg.push(catg);
+        //   }
+        // }
+        // sortedCatg.push("All");
+        // console.log("input", input);
+        // console.log("categories", categories);
+        // console.log("SORTCatg", sortedCatg);
+
         this.setState({
           categoriesANDcolor,
-          categories,
+          // categories, //: sortedCatg,
           category: input,
           timeFrame: timeR,
           totalTime,
@@ -512,7 +537,7 @@ class Metrics extends React.Component {
   }
 
   render() {
-    // console.log(this.state.customStartDate);
+    // console.log("categories STATE:", this.state.categories);
     return (
       <div id="Print">
         <br></br>
@@ -593,9 +618,14 @@ class Metrics extends React.Component {
                 this.specifyCategory(e.target.value, this.state.timeFrame);
               }}
             >
-              {this.state.categories.map((cat, i) => (
-                <CategoryList cat={cat} key={i} />
-              ))}
+              {this.state.categories.map(
+                (cat, i) => {
+                  // console.log("map catg:", cat);
+                  return <option value={`${cat}`}>{cat}</option>;
+                  // return <CategoryList cat={cat} key={i} />;
+                }
+                // works fine except when 'all' is picked it shows meeting
+              )}
             </select>
           </div>
         </div>
@@ -643,8 +673,9 @@ class Metrics extends React.Component {
   }
 }
 
-const CategoryList = (props) => {
-  return <option value={`${props.cat}`}>{props.cat}</option>;
-};
+// const CategoryList = (props) => {
+//   // console.log("catg dropchoice:", props);
+//   return <option value={`${props.cat}`}>{props.cat}</option>;
+// };
 
 export default Metrics;
