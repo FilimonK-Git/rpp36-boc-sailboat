@@ -5,11 +5,7 @@ import html2canvas from "html2canvas";
 import { jsPDF } from "jspdf";
 import { ReportPieChart } from "./Report_PieChart.jsx";
 import { ReportBarChart } from "./Report_BarChart.jsx";
-// import BasicDateTimePicker from "./customDate.jsx";
 import ReportTable from "./Report_Table.jsx";
-
-import Dropdown from "react-bootstrap/Dropdown";
-import DropdownButton from "react-bootstrap/DropdownButton";
 
 class Metrics extends React.Component {
   constructor(props) {
@@ -17,7 +13,7 @@ class Metrics extends React.Component {
     this.state = {
       allData: [],
       categoriesANDcolor: [],
-      categories: ["All"], // the dropdown sticking to 'ALL' even though data is rendewred correctly
+      categories: ["All"],
       timeFrame: "Today",
       category: "All",
       totalTime: "0 min",
@@ -27,6 +23,7 @@ class Metrics extends React.Component {
   }
 
   componentDidMount() {
+    console.log("componentDidMount");
     axios
       .get("/completedTasks", {
         params: {
@@ -74,18 +71,6 @@ class Metrics extends React.Component {
           }
         }
 
-        function secondsToHms(d) {
-          d = Number(d);
-          let h = Math.floor(d / 3600);
-          let m = Math.floor((d % 3600) / 60);
-          let s = Math.floor((d % 3600) % 60);
-
-          let hDisplay = h > 0 ? h + (h == 1 ? " hour " : " hours ") : "";
-          let mDisplay = m > 0 ? m + (m == 1 ? " minute " : " minutes ") : "";
-          let sDisplay = s > 0 ? s + (s == 1 ? " second" : " seconds") : "";
-          return hDisplay + mDisplay + sDisplay;
-        }
-
         let totalTimeSpent = 0;
         let chartData = [];
         for (let catg in catgDurations) {
@@ -103,11 +88,11 @@ class Metrics extends React.Component {
 
           catgDurations[catg].totalSec = catgTotalSec;
           chartData.push(catgTotalSec);
-          catgDurations[catg].totalDuration = secondsToHms(catgTotalSec);
+          catgDurations[catg].totalDuration = this.secondsToHms(catgTotalSec);
           totalTimeSpent += catgTotalSec;
         }
         catgDurations.totalTimeSpent = totalTimeSpent;
-        let totalTime = secondsToHms(catgDurations.totalTimeSpent);
+        let totalTime = this.secondsToHms(catgDurations.totalTimeSpent);
 
         let sortedCatg = [this.state.category];
         for (let catg of categories) {
@@ -123,10 +108,14 @@ class Metrics extends React.Component {
           allData,
           totalTime,
         });
+      })
+      .catch((err) => {
+        console.log("componentDidMount ERR", err);
       });
   }
 
   specifyCategory(input, timeR) {
+    console.log("specifyCategory");
     axios
       .get("/completedTasksPerCatg", {
         params: {
@@ -137,7 +126,7 @@ class Metrics extends React.Component {
       })
       .then((allCatgData) => {
         let allData = allCatgData.data.results;
-        this.setState({ allData });
+        // this.setState({ allData }); NEW CHANGE FOR CRASH TEST
 
         let categoriesANDcolor = [];
         let categories = ["All"];
@@ -176,18 +165,6 @@ class Metrics extends React.Component {
           }
         }
 
-        function secondsToHms(d) {
-          d = Number(d);
-          let h = Math.floor(d / 3600);
-          let m = Math.floor((d % 3600) / 60);
-          let s = Math.floor((d % 3600) % 60);
-
-          let hDisplay = h > 0 ? h + (h == 1 ? " hour " : " hours ") : "";
-          let mDisplay = m > 0 ? m + (m == 1 ? " minute " : " minutes ") : "";
-          let sDisplay = s > 0 ? s + (s == 1 ? " second" : " seconds") : "";
-          return hDisplay + mDisplay + sDisplay;
-        }
-
         let totalTimeSpent = 0;
         let chartData = [];
         for (let catg in catgDurations) {
@@ -205,35 +182,41 @@ class Metrics extends React.Component {
 
           catgDurations[catg].totalSec = catgTotalSec;
           chartData.push(catgTotalSec);
-          catgDurations[catg].totalDuration = secondsToHms(catgTotalSec);
+          catgDurations[catg].totalDuration = this.secondsToHms(catgTotalSec);
           totalTimeSpent += catgTotalSec;
         }
         catgDurations.totalTimeSpent = totalTimeSpent;
-        let totalTime = secondsToHms(catgDurations.totalTimeSpent);
-
-        // sort categories (all i need to for it to start with curr category then populate the rest)
-        // let sortedCatg = [input];
-        // for (let catg of categories) {
-        //   if (catg !== input) {
-        //     sortedCatg.push(catg);
-        //   }
-        // }
-        // sortedCatg.push("All");
-        // console.log("input", input);
-        // console.log("categories", categories);
-        // console.log("SORTCatg", sortedCatg);
+        let totalTime = this.secondsToHms(catgDurations.totalTimeSpent);
 
         this.setState({
+          allData, // commented out above, added here
           categoriesANDcolor,
           // categories, //: sortedCatg,
           category: input,
           timeFrame: timeR,
           totalTime,
         });
+      })
+      .catch((err) => {
+        console.log("specifyCategory ERR", err);
       });
   }
 
+  secondsToHms(d) {
+    console.log("secondsToHms");
+    d = Number(d);
+    let h = Math.floor(d / 3600);
+    let m = Math.floor((d % 3600) / 60);
+    let s = Math.floor((d % 3600) % 60);
+
+    let hDisplay = h > 0 ? h + (h == 1 ? " hour " : " hours ") : "";
+    let mDisplay = m > 0 ? m + (m == 1 ? " minute " : " minutes ") : "";
+    let sDisplay = s > 0 ? s + (s == 1 ? " second" : " seconds") : "";
+    return hDisplay + mDisplay + sDisplay;
+  }
+
   specifyTimeframe(input, catg) {
+    console.log("specifyTimeframe");
     if (input === "Custom") {
       this.setState({ timeFrame: input });
     } else {
@@ -283,18 +266,6 @@ class Metrics extends React.Component {
             }
           }
 
-          function secondsToHms(d) {
-            d = Number(d);
-            let h = Math.floor(d / 3600);
-            let m = Math.floor((d % 3600) / 60);
-            let s = Math.floor((d % 3600) % 60);
-
-            let hDisplay = h > 0 ? h + (h == 1 ? " hour " : " hours ") : "";
-            let mDisplay = m > 0 ? m + (m == 1 ? " minute " : " minutes ") : "";
-            let sDisplay = s > 0 ? s + (s == 1 ? " second" : " seconds") : "";
-            return hDisplay + mDisplay + sDisplay;
-          }
-
           let totalTimeSpent = 0;
           let chartData = [];
           for (let catg in catgDurations) {
@@ -312,11 +283,11 @@ class Metrics extends React.Component {
 
             catgDurations[catg].totalSec = catgTotalSec;
             chartData.push(catgTotalSec);
-            catgDurations[catg].totalDuration = secondsToHms(catgTotalSec);
+            catgDurations[catg].totalDuration = this.secondsToHms(catgTotalSec);
             totalTimeSpent += catgTotalSec;
           }
           catgDurations.totalTimeSpent = totalTimeSpent;
-          let totalTime = secondsToHms(catgDurations.totalTimeSpent);
+          let totalTime = this.secondsToHms(catgDurations.totalTimeSpent);
 
           this.setState({
             categoriesANDcolor,
@@ -325,12 +296,15 @@ class Metrics extends React.Component {
             timeFrame: input,
             totalTime,
           });
+        })
+        .catch((err) => {
+          console.log("specifyTimeframe ERR", err);
         });
     }
   }
 
   timeUpdated(input) {
-    // console.log("oooo", input, this.state.timeFrame, this.state.category);
+    console.log("timeUpdated");
     if (this.state.category === "All") {
       axios
         .get("/completedTasks", {
@@ -378,18 +352,6 @@ class Metrics extends React.Component {
             }
           }
 
-          function secondsToHms(d) {
-            d = Number(d);
-            let h = Math.floor(d / 3600);
-            let m = Math.floor((d % 3600) / 60);
-            let s = Math.floor((d % 3600) % 60);
-
-            let hDisplay = h > 0 ? h + (h == 1 ? " hour " : " hours ") : "";
-            let mDisplay = m > 0 ? m + (m == 1 ? " minute " : " minutes ") : "";
-            let sDisplay = s > 0 ? s + (s == 1 ? " second" : " seconds") : "";
-            return hDisplay + mDisplay + sDisplay;
-          }
-
           let totalTimeSpent = 0;
           let chartData = [];
           for (let catg in catgDurations) {
@@ -407,13 +369,16 @@ class Metrics extends React.Component {
 
             catgDurations[catg].totalSec = catgTotalSec;
             chartData.push(catgTotalSec);
-            catgDurations[catg].totalDuration = secondsToHms(catgTotalSec);
+            catgDurations[catg].totalDuration = this.secondsToHms(catgTotalSec);
             totalTimeSpent += catgTotalSec;
           }
           catgDurations.totalTimeSpent = totalTimeSpent;
-          let totalTime = secondsToHms(catgDurations.totalTimeSpent);
+          let totalTime = this.secondsToHms(catgDurations.totalTimeSpent);
 
           this.setState({ categoriesANDcolor, categories, allData, totalTime });
+        })
+        .catch((err) => {
+          console.log("timeUpdated ERR", err);
         });
     } else {
       this.specifyCategory(input, this.state.timeFrame);
@@ -421,11 +386,13 @@ class Metrics extends React.Component {
   }
 
   customStartDate(input) {
+    console.log("customStartDate");
     // console.log("star", input);
     this.setState({ customStartDate: input });
   }
 
   customEndDateAndSearch(customEndDate, catg) {
+    console.log("customEndDateAndSearch");
     // console.log("end", customEndDate, catg); // upon last input, seacxrh db
 
     axios
@@ -474,18 +441,6 @@ class Metrics extends React.Component {
           }
         }
 
-        function secondsToHms(d) {
-          d = Number(d);
-          let h = Math.floor(d / 3600);
-          let m = Math.floor((d % 3600) / 60);
-          let s = Math.floor((d % 3600) % 60);
-
-          let hDisplay = h > 0 ? h + (h == 1 ? " hour " : " hours ") : "";
-          let mDisplay = m > 0 ? m + (m == 1 ? " minute " : " minutes ") : "";
-          let sDisplay = s > 0 ? s + (s == 1 ? " second" : " seconds") : "";
-          return hDisplay + mDisplay + sDisplay;
-        }
-
         let totalTimeSpent = 0;
         let chartData = [];
         for (let catg in catgDurations) {
@@ -503,11 +458,11 @@ class Metrics extends React.Component {
 
           catgDurations[catg].totalSec = catgTotalSec;
           chartData.push(catgTotalSec);
-          catgDurations[catg].totalDuration = secondsToHms(catgTotalSec);
+          catgDurations[catg].totalDuration = this.secondsToHms(catgTotalSec);
           totalTimeSpent += catgTotalSec;
         }
         catgDurations.totalTimeSpent = totalTimeSpent;
-        let totalTime = secondsToHms(catgDurations.totalTimeSpent);
+        let totalTime = this.secondsToHms(catgDurations.totalTimeSpent);
 
         this.setState({
           categoriesANDcolor,
@@ -517,10 +472,14 @@ class Metrics extends React.Component {
           category: catg,
           totalTime,
         });
+      })
+      .catch((err) => {
+        console.log("customEndDateAndSearch ERR", err);
       });
   }
 
   printDocument() {
+    console.log("printDocument");
     const printable = document.getElementById("Print");
     html2canvas(printable, {
       scale: 1,
@@ -532,12 +491,12 @@ class Metrics extends React.Component {
         pdf.save("Report.pdf");
       })
       .catch((err) => {
-        console.log("errrr", err);
+        console.log("printDocument ERR", err);
       });
   }
 
   render() {
-    // console.log("categories STATE:", this.state.categories);
+    // console.log("test", this.state);
     return (
       <div id="Print">
         <br></br>
@@ -579,7 +538,7 @@ class Metrics extends React.Component {
             // <BasicDateTimePicker />
             <div>
               <div>
-                <label for="customFrom">From: </label>
+                <label htmlFor="customFrom">From: </label>
                 <input
                   type="date"
                   id="customFrom"
@@ -590,7 +549,7 @@ class Metrics extends React.Component {
                 ></input>
               </div>
               <div>
-                <label for="customTo">To: </label>
+                <label htmlFor="customTo">To: </label>
                 <input
                   type="date"
                   id="customTo"
@@ -618,14 +577,13 @@ class Metrics extends React.Component {
                 this.specifyCategory(e.target.value, this.state.timeFrame);
               }}
             >
-              {this.state.categories.map(
-                (cat, i) => {
-                  // console.log("map catg:", cat);
-                  return <option value={`${cat}`}>{cat}</option>;
-                  // return <CategoryList cat={cat} key={i} />;
-                }
-                // works fine except when 'all' is picked it shows meeting
-              )}
+              {this.state.categories.map((cat, i) => {
+                return (
+                  <option value={`${cat}`} key={i}>
+                    {cat}
+                  </option>
+                );
+              })}
             </select>
           </div>
         </div>
@@ -672,10 +630,5 @@ class Metrics extends React.Component {
     );
   }
 }
-
-// const CategoryList = (props) => {
-//   // console.log("catg dropchoice:", props);
-//   return <option value={`${props.cat}`}>{props.cat}</option>;
-// };
 
 export default Metrics;

@@ -15,31 +15,29 @@ class ReportTable extends React.Component {
 
   render() {
     return (
-      <div>
-        <table>
-          <thead>
-            <tr>
-              <th style={{ fontWeight: "bold" }}>
-                <div>Task</div>
-              </th>
-              <th style={{ fontWeight: "bold" }}>
-                <div>Category</div>
-              </th>
-              <th style={{ fontWeight: "bold" }}>
-                <div>Duration</div>
-              </th>
-            </tr>
-            {this.props.data.map((task, index) => (
-              <Tasks
-                task={task}
-                key={index}
-                timeUpdated={this.props.timeUpdated}
-                totalTimeCompletingTasks={this.props.totalTimeCompletingTasks}
-              />
-            ))}
-          </thead>
-        </table>
-      </div>
+      <table>
+        <thead>
+          <tr>
+            <th style={{ fontWeight: "bold" }}>
+              <div>Task</div>
+            </th>
+            <th style={{ fontWeight: "bold" }}>
+              <div>Category</div>
+            </th>
+            <th style={{ fontWeight: "bold" }}>
+              <div>Duration</div>
+            </th>
+          </tr>
+          {this.props.data.map((task, index) => (
+            <Tasks
+              task={task}
+              key={index}
+              timeUpdated={this.props.timeUpdated}
+              totalTimeCompletingTasks={this.props.totalTimeCompletingTasks}
+            />
+          ))}
+        </thead>
+      </table>
     );
   }
 }

@@ -50,6 +50,9 @@ class Tasks extends React.Component {
       })
       .then((updatedData) => {
         this.props.timeUpdated(this.props.task.category);
+      })
+      .catch((err) => {
+        console.log("updateDuration ERR", err);
       });
   }
 
@@ -63,6 +66,7 @@ class Tasks extends React.Component {
             e.stopPropagation();
             this.setState({ show: true });
           }}
+          suppressContentEditableWarning={true}
           contentEditable
           onInput={(e) => {
             // console.log("tarr", e);
@@ -72,6 +76,7 @@ class Tasks extends React.Component {
           {this.timeCalc()}
           {this.state.show ? (
             <button
+              role="timeUpdater"
               onClick={(e) => {
                 e.stopPropagation();
                 this.updateDuration(this.props.task.todo_id);
