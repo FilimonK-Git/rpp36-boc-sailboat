@@ -70,7 +70,7 @@ class App extends React.Component {
   }
 
   componentDidUpdate() {
-    console.log("todo", this.state.todos);
+    // console.log("todo", this.state.todos);
     if (
       Object.keys(this.state.categoryColors).length !== 0 &&
       this.state.todos.length !== 0 &&

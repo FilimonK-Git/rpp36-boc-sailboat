@@ -1,5 +1,5 @@
-// require("dotenv").config();
-// const { Pool } = require("pg");
+require("dotenv").config();
+const { Pool } = require("pg");
 // require("dotenv").config({path: __dirname + '/../../../../.env'});
 // const config = require("/Users/filimonkiros/HackReactor/RPP36/Weeks_Oct1_Oct29/test.js");
 

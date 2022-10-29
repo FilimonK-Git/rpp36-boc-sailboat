@@ -14,34 +14,34 @@ const port = 3000;
 const dbMetrics = require("./report.js");
 
 const pgPool = db.pool;
-const secret = 'team sailboat';
+const secret = "team sailboat";
 const sessionConfig = {
   store: new pgSession({
     pool: pgPool,
-    tableName: 'session',
+    tableName: "session",
   }),
-  name: 'SID',
+  name: "SID",
   secret: secret,
   resave: false, // don't save session if unmodified
   saveUninitialized: false, // don't save session if unmodified
   cookie: {
     maxAge: 1000 * 60 * 60 * 24 * 30,
     aameSite: true,
-    secure: false // enable only on https
-  }
+    secure: false, // enable only on https
+  },
 };
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(express.static("client/public"));
 app.use("/share/*", express.static("client/public"));
-// app.use("/metrics/", express.static("client/public"));
+app.use("/metrics/", express.static("client/public"));
 app.use(cookieParser(secret));
 app.use(session(sessionConfig));
 passport.initialize();
 passport.session();
-app.use(passport.authenticate('session'));
-app.use('/auth', authRouter);
+app.use(passport.authenticate("session"));
+app.use("/auth", authRouter);
 
 app.post("/todo", function (req, res) {
   if (req.body.start && req.body.end) {
@@ -55,21 +55,19 @@ app.post("/todo", function (req, res) {
   }
 });
 
-app.get('/todo', function(req, res) {
-  db.getOneTodo(req.query.id)
-  .then(result => res.send(result))
-})
+app.get("/todo", function (req, res) {
+  db.getOneTodo(req.query.id).then((result) => res.send(result));
+});
 
-app.get('/todos', function(req, res) {
-  db.getTodos(req.query.id)
-  .then(result => res.send(result))
-})
+app.get("/todos", function (req, res) {
+  db.getTodos(req.query.id).then((result) => res.send(result));
+});
 
 app.delete("/todos", function (req, res) {
   db.deleteTodo(req.query.todoID).then(res.send("DELETED"));
 });
 
-app.put('/complete', function(req, res) {
+app.put("/complete", function (req, res) {
   if (req.body.complete === true) {
     db.incomplete(req.body.todoID).then(res.send("MARKED INCOMPLETE"));
   } else {

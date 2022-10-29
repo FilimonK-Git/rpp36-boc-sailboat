@@ -479,20 +479,45 @@ class Metrics extends React.Component {
   }
 
   printDocument() {
-    console.log("printDocument");
+    // console.log("printDocument");
     const printable = document.getElementById("Print");
+    // html2canvas(printable, {
+    //   scale: 1,
+    // })
+    //   .then((canvas) => {
+    //     const imgData = canvas.toDataURL("image/png");
+    //     const pdf = new jsPDF();
+    //     pdf.addImage(imgData, "JPEG", 0, 0);
+    //     pdf.save(`${this.state.timeFrame}_report.pdf`);
+    //   })
+    //   .catch((err) => {
+    //     console.log("printDocument ERR", err);
+    //   });
+
     html2canvas(printable, {
-      scale: 1,
-    })
-      .then((canvas) => {
-        const imgData = canvas.toDataURL("image/png");
-        const pdf = new jsPDF();
-        pdf.addImage(imgData, "JPEG", 0, 0);
-        pdf.save("Report.pdf");
-      })
-      .catch((err) => {
-        console.log("printDocument ERR", err);
-      });
+      useCORS: true,
+      allowTaint: true,
+      scrollY: -window.scrollY,
+    }).then((canvas) => {
+      const image = canvas.toDataURL("image/jpeg", 1.0);
+      const doc = new jsPDF("p", "px", "a4");
+      const pageWidth = doc.internal.pageSize.getWidth();
+      const pageHeight = doc.internal.pageSize.getHeight();
+
+      const widthRatio = pageWidth / canvas.width;
+      const heightRatio = pageHeight / canvas.height;
+      const ratio = widthRatio > heightRatio ? heightRatio : widthRatio;
+
+      const canvasWidth = canvas.width * ratio;
+      const canvasHeight = canvas.height * ratio;
+
+      const marginX = (pageWidth - canvasWidth) / 2;
+      const marginY = (pageHeight - canvasHeight) / 2;
+
+      doc.addImage(image, "JPEG", marginX, marginY, canvasWidth, canvasHeight);
+      // doc.output("dataurlnewwindow");
+      doc.save(`${this.state.timeFrame}_report.pdf`);
+    });
   }
 
   render() {
