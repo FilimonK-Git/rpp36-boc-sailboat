@@ -1,5 +1,20 @@
-require("dotenv").config();
-const { Pool } = require("pg");
+// require("dotenv").config();
+// const { Pool } = require("pg");
+// require("dotenv").config({path: __dirname + '/../../../../.env'});
+// const config = require("/Users/filimonkiros/HackReactor/RPP36/Weeks_Oct1_Oct29/test.js");
+
+// console.log("zzz", test.PGPORT);
+
+// const config = require("/home/ubuntu/dbinfo/config.js"); // path is to local dir in instance
+
+// const pool = new Pool({
+//   PGUSER: config.PGUSER,
+//   PGHOST: config.PGHOST,
+//   PGDATABASE: config.PGDATABASE,
+//   PGPASSWORD: config.PGPASSWORD,
+//   PGPORT: config.PGPORT,
+// });
+
 const { PGHOST, PGUSER, PGDATABASE, PGPASSWORD, PGPORT } = process.env;
 
 const pool = new Pool({
@@ -25,22 +40,20 @@ const getTodos = function (id) {
   });
 };
 
-const getOneTodo = function(id) {
-  return pool
-  .connect()
-  .then(client => {
+const getOneTodo = function (id) {
+  return pool.connect().then((client) => {
     return client
       .query(`SELECT * FROM todos WHERE todo_id=${id}`)
-      .then(res => {
+      .then((res) => {
         client.release();
         return res.rows;
       })
-      .catch(err => {
+      .catch((err) => {
         client.release();
         console.log(err.stack);
-      })
-  })
-}
+      });
+  });
+};
 
 const createTodo = function (todo) {
   return pool.connect().then((client) => {
@@ -308,77 +321,73 @@ const setStartTime = function (todo_id, startTime) {
 };
 
 // Authorization Queries
-const addUser = function(firstname, lastname, email, password, cb) {
-  return pool
-  .connect()
-  .then(client => {
+const addUser = function (firstname, lastname, email, password, cb) {
+  return pool.connect().then((client) => {
     return client
-      .query(`INSERT INTO users (firstname, lastname, email, password) VALUES ('${firstname}', '${lastname}', '${email}', crypt('${password}', gen_salt('bf', 8))) RETURNING *;`)
-      .then(res => {
+      .query(
+        `INSERT INTO users (firstname, lastname, email, password) VALUES ('${firstname}', '${lastname}', '${email}', crypt('${password}', gen_salt('bf', 8))) RETURNING *;`
+      )
+      .then((res) => {
         cb(null, res.rows);
       })
-      .catch(err => {
+      .catch((err) => {
         cb(err);
       })
       .then(() => {
-        client.release()
+        client.release();
       });
-  })
-}
+  });
+};
 
-const getUserByEmail = function(email, cb) {
-  return pool
-  .connect()
-  .then(client => {
+const getUserByEmail = function (email, cb) {
+  return pool.connect().then((client) => {
     return client
       .query(`SELECT * FROM users WHERE email='${email}'`)
-      .then(res => {
+      .then((res) => {
         res.rowCount > 0 ? cb(null, res.rows[0]) : cb(null, false);
       })
-      .catch(err => {
+      .catch((err) => {
         cb(err);
       })
       .then(() => {
-        client.release()
+        client.release();
       });
-  })
-}
+  });
+};
 
-const getUserById = function(id, cb) {
-  return pool
-  .connect()
-  .then(client => {
+const getUserById = function (id, cb) {
+  return pool.connect().then((client) => {
     return client
       .query(`SELECT * FROM users WHERE user_id='${id}'`)
-      .then(res => {
+      .then((res) => {
         cb(null, res.rows[0]);
       })
-      .catch(err => {
+      .catch((err) => {
         cb(err);
       })
       .then(() => {
-        client.release()
+        client.release();
       });
-  })
-}
+  });
+};
 
-const verifyPassword = function(email, password, cb) {
-  return pool
-  .connect()
-  .then(client => {
+const verifyPassword = function (email, password, cb) {
+  return pool.connect().then((client) => {
     return client
-      .query(`SELECT user_id FROM users WHERE email='${email}' AND password=crypt('${password}', password);`)
-      .then(res => {
+      .query(
+        `SELECT user_id FROM users WHERE email='${email}' AND password=crypt('${password}', password);`
+      )
+      .then((res) => {
         res.rowCount > 0 ? cb(null, true) : cb(null, false);
       })
-      .catch(err => {
+      .catch((err) => {
         cb(err);
       })
       .then(() => {
-        client.release()
+        client.release();
       });
-  })
-}
+  });
+};
 
 module.exports = {
   pool,
@@ -400,5 +409,5 @@ module.exports = {
   verifyPassword,
   setStartTime,
   getOneTodo,
-  editTodo
+  editTodo,
 };
