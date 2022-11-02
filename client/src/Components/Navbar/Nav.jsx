@@ -7,18 +7,29 @@ import ExitToAppIcon from '@mui/icons-material/ExitToApp';
 import HomeIcon from '@mui/icons-material/Home';
 import Tooltip from '@mui/material/Tooltip';
 
-const Navbar= () =>{
+const Navbar= (props) =>{
   return (
-  <div className ="header">
-    <ul>
-      <li>
+  <div >
+
+    <ul className ="header">
+      <li >
         <Link to="/">
           <Tooltip title="Home" placement="bottom" arrow>
-            <HomeIcon />
+          <HomeIcon />
           </Tooltip>
         </Link>
       </li>
-      <li>
+      <li >
+        <Link to="/forms">
+          <Tooltip title="To-dos" placement="bottom" arrow>
+            <AddTaskIcon/>
+          </Tooltip>
+        </Link>
+      </li>
+      <li className="titleText">
+        ENCOMPASS
+      </li>
+      <li >
         <Link to="/metrics">
           <Tooltip title="Metrics" placement="bottom" arrow>
             <BarChartIcon/>
@@ -26,28 +37,14 @@ const Navbar= () =>{
         </Link>
       </li>
       <li>
-        <Link to="/forms">
-          <Tooltip title="To-dos" placement="bottom" arrow>
-            <AddTaskIcon/>
-          </Tooltip>
-        </Link>
-      </li>
-      <li>
-        <Link to="/settings">
-          <Tooltip title="Create Appointment" placement="bottom" arrow>
-            <SettingsApplicationsIcon/>
-          </Tooltip>
-        </Link>
-      </li>
-      <li>
         <Link to="/signout">
           <Tooltip title="Sign Out" placement="bottom" arrow>
-            <ExitToAppIcon/>
+            <ExitToAppIcon onClick ={props.loginToggel}/>
           </Tooltip>
         </Link>
       </li>
-      <Outlet />
     </ul>
+    <Outlet />
   </div>
   );
 }

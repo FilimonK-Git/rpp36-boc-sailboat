@@ -1,19 +1,5 @@
 require("dotenv").config();
 const { Pool } = require("pg");
-// require("dotenv").config({path: __dirname + '/../../../../.env'});
-// const config = require("/Users/filimonkiros/HackReactor/RPP36/Weeks_Oct1_Oct29/test.js");
-
-// console.log("zzz", test.PGPORT);
-
-// const config = require("/home/ubuntu/dbinfo/config.js"); // path is to local dir in instance
-
-// const pool = new Pool({
-//   PGUSER: config.PGUSER,
-//   PGHOST: config.PGHOST,
-//   PGDATABASE: config.PGDATABASE,
-//   PGPASSWORD: config.PGPASSWORD,
-//   PGPORT: config.PGPORT,
-// });
 
 const { PGHOST, PGUSER, PGDATABASE, PGPASSWORD, PGPORT } = process.env;
 

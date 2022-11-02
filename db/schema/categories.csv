@@ -1,5 +1,6 @@
 category_id,category,user_id,color
-1,Meeting,1,#d6e9f2
-2,Shop,1,#86dff2
-3,Miscellaneous,1,#7ee9cc
-4,Workout,1,#8539b8
+1,Meeting,8,#d6e9f2
+2,Shop,8,#86dff2
+3,Miscellaneous,8,#7ee9cc
+4,Workout,8,#8539b8
+5,Health,8,#8539b8

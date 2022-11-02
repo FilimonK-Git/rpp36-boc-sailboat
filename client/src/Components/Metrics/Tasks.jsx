@@ -17,7 +17,6 @@ class Tasks extends React.Component {
     var h = Math.floor(d / 3600);
     var m = Math.floor((d % 3600) / 60);
     var s = Math.floor((d % 3600) % 60);
-
     var hDisplay = h > 0 ? h + (h == 1 ? " hour " : " hours ") : "";
     var mDisplay = m > 0 ? m + (m == 1 ? " minute " : " minutes ") : "";
     var sDisplay = s > 0 ? s + (s == 1 ? " second" : " seconds") : "";
@@ -25,18 +24,15 @@ class Tasks extends React.Component {
   }
 
   timeCalc() {
-    // var timeSpent;
     var firstDate = new Date(this.props.task.start_time);
     var secondDate = new Date(this.props.task.end_time);
     var firstDateInSeconds = firstDate.getTime() / 1000;
     var secondDateInSeconds = secondDate.getTime() / 1000;
     var difference = Math.abs(firstDateInSeconds - secondDateInSeconds);
-
     return this.secondsToHms(difference);
   }
 
   logNewTime(e) {
-    // console.log("logNewTime: ", e, e.substring(0, e.length - 1));
     this.setState({ newDuration: e.substring(0, e.length - 1) });
   }
 
@@ -52,7 +48,7 @@ class Tasks extends React.Component {
         this.props.timeUpdated(this.props.task.category);
       })
       .catch((err) => {
-        console.log("updateDuration ERR", err);
+        console.error("updateDuration ERR", err);
       });
   }
 
@@ -69,7 +65,6 @@ class Tasks extends React.Component {
           suppressContentEditableWarning={true}
           contentEditable
           onInput={(e) => {
-            // console.log("tarr", e);
             this.logNewTime(e.target.firstChild.data);
           }}
         >
@@ -86,7 +81,6 @@ class Tasks extends React.Component {
               Update
             </button>
           ) : (
-            // shoudl there be a remove task btn
             ""
           )}
         </td>

@@ -5,9 +5,6 @@ import { Pie, Doughnut } from "react-chartjs-2";
 ChartJS.register(ArcElement, Tooltip, Legend);
 
 export function ReportPieChart(props) {
-  // console.log("pro", props);
-  // console.log("here");
-
   let chartLegend = [];
   let chartColors = [];
   for (let cat of props.data.categoriesANDcolor) {
@@ -100,18 +97,9 @@ export function ReportPieChart(props) {
     plugins: {
       legend: {
         display: true,
-        // position: "bottom",
-        // align: "start",
       },
     },
   };
 
-  return (
-    <Pie
-      className="charts"
-      data={data}
-      options={options}
-      // options={{ responsive: true, maintainAspectRatio: true }}
-    />
-  );
+  return <Pie className="charts" data={data} options={options} />;
 }

@@ -8,10 +8,18 @@ Execute this file from the command line by typing:
 
 \c encompass;
 
-CREATE EXTENSION citext;
-CREATE EXTENSION pgcrypto;
 
--- drop table if exists users cascade;
+drop table if exists users cascade;
+drop table if exists categories cascade;
+drop table if exists todos cascade;
+
+DROP EXTENSION IF EXISTS pgcrypto;
+DROP EXTENSION IF EXISTS citext;
+
+
+CREATE EXTENSION pgcrypto;
+CREATE EXTENSION citext;
+
 CREATE TABLE users (
   user_id SERIAL,
   firstname TEXT NOT NULL,
@@ -27,7 +35,6 @@ CREATE TABLE users (
     CHECK(char_length(lastName) <= 20)
 );
 
--- drop table if exists categories cascade;
 CREATE TABLE categories (
   category_id SERIAL,
   category CITEXT,
@@ -43,7 +50,6 @@ CREATE TABLE categories (
   UNIQUE (user_id, category),
   UNIQUE (user_id, color)
 );
--- drop table if exists todos;
 CREATE TABLE todos (
   todo_id SERIAL,
   user_id INT,

@@ -1,8 +1,7 @@
 user_id,firstname,lastname,email,opt_in,password
 1,Aaron,Wang,aaronw7@uci.edu, false,
 2,David,Lim,limdh1998@gmail.com ,false,
-3,Filimon,Kiros,filimona.kiros@gmail.com,false,
-4,Jason,Novacovici,jason.novacovici@gmail.com,false,
-5,Joanna,Zhang,qingmango@gmail.com,false,
-6,Mike,Manzo,mpmanzo@gmail.com,false,
-7,Othniel,Chan,othnielhr.chan@gmail.com,false,
+3,Jason,Novacovici,jason.novacovici@gmail.com,false,
+4,Joanna,Zhang,qingmango@gmail.com,false,
+5,Mike,Manzo,mpmanzo@gmail.com,false,
+6,Othniel,Chan,othnielhr.chan@gmail.com,false,

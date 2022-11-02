@@ -1,0 +1,12 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Report Metric Test Suite Test creation of two charts with test data renders bar chart successfully 1`] = `undefined`;
+
+exports[`Report Metric Test Suite Test creation of two charts with test data renders pie chart successfully 1`] = `
+<canvas
+  className="charts"
+  height={150}
+  role="img"
+  width={300}
+/>
+`;

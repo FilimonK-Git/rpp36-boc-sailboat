@@ -10,18 +10,9 @@ import {
 } from "chart.js";
 import { Pie, Doughnut, Bar } from "react-chartjs-2";
 
-ChartJS.register(
-  CategoryScale,
-  LinearScale,
-  BarElement,
-  // Title,
-  Tooltip,
-  Legend
-);
+ChartJS.register(CategoryScale, LinearScale, BarElement, Tooltip, Legend);
 
 export function ReportBarChart(props) {
-  // console.log("pro", props);
-
   var chartLegend = [];
   var chartColors = [];
   for (var cat of props.data.categoriesANDcolor) {
@@ -54,7 +45,6 @@ export function ReportBarChart(props) {
     var h = Math.floor(d / 3600);
     var m = Math.floor((d % 3600) / 60);
     var s = Math.floor((d % 3600) % 60);
-
     var hDisplay = h > 0 ? h + (h == 1 ? " hour " : " hours ") : "";
     var mDisplay = m > 0 ? m + (m == 1 ? " minute " : " minutes ") : "";
     var sDisplay = s > 0 ? s + (s == 1 ? " second" : " seconds") : "";
@@ -70,14 +60,12 @@ export function ReportBarChart(props) {
     for (let i = 0; i < catgDurations[catg].length; i++) {
       var start = new Date(catgDurations[catg][i][0]);
       var end = new Date(catgDurations[catg][i][1]);
-
       var start_sec = start.getTime() / 1000;
       var end_sec = end.getTime() / 1000;
       var difference = Math.abs(start_sec - end_sec);
       barChartData.push(difference / 60);
       catgTotalSec += difference;
     }
-    // catgDurations[catg].push(difference);
 
     catgDurations[catg].totalSec = catgTotalSec;
     chartData.push(catgTotalSec);
@@ -85,9 +73,6 @@ export function ReportBarChart(props) {
     totalTimeSpent += catgTotalSec;
   }
   catgDurations.totalTimeSpent = totalTimeSpent;
-  // const labels = Utils.months({ count: 7 });
-
-  // console.log("xx", catgDurations, barChartData);
 
   var labels = [];
   for (let i = 0; i < props.data.allData.length; i++) {
@@ -100,16 +85,6 @@ export function ReportBarChart(props) {
       {
         label: `${props.data.category}`,
         data: barChartData,
-        // backgroundColor: [
-        //   "rgba(255, 99, 132, 0.2)",
-        //   "rgba(255, 159, 64, 0.2)",
-        //   "rgba(255, 205, 86, 0.2)",
-        // ],
-        // borderColor: [
-        //   "rgb(255, 99, 132)",
-        //   "rgb(255, 159, 64)",
-        //   "rgb(255, 205, 86)",
-        // ],
         borderWidth: 1,
       },
     ],

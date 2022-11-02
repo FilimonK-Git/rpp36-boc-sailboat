@@ -23,7 +23,6 @@ class Metrics extends React.Component {
   }
 
   componentDidMount() {
-    console.log("componentDidMount");
     axios
       .get("/completedTasks", {
         params: {
@@ -101,7 +100,6 @@ class Metrics extends React.Component {
           }
         }
 
-        // console.log("in cdm:", totalTime);
         this.setState({
           categoriesANDcolor,
           categories: sortedCatg,
@@ -110,12 +108,11 @@ class Metrics extends React.Component {
         });
       })
       .catch((err) => {
-        console.log("componentDidMount ERR", err);
+        console.error("componentDidMount ERR", err);
       });
   }
 
   specifyCategory(input, timeR) {
-    console.log("specifyCategory");
     axios
       .get("/completedTasksPerCatg", {
         params: {
@@ -126,7 +123,6 @@ class Metrics extends React.Component {
       })
       .then((allCatgData) => {
         let allData = allCatgData.data.results;
-        // this.setState({ allData }); NEW CHANGE FOR CRASH TEST
 
         let categoriesANDcolor = [];
         let categories = ["All"];
@@ -136,7 +132,6 @@ class Metrics extends React.Component {
             categories.push(cat.category);
           }
         }
-        // console.log("XX", categories);
 
         let chartLegend = [];
         let chartColors = [];
@@ -198,12 +193,11 @@ class Metrics extends React.Component {
         });
       })
       .catch((err) => {
-        console.log("specifyCategory ERR", err);
+        console.error("specifyCategory ERR", err);
       });
   }
 
   secondsToHms(d) {
-    console.log("secondsToHms");
     d = Number(d);
     let h = Math.floor(d / 3600);
     let m = Math.floor((d % 3600) / 60);
@@ -216,7 +210,6 @@ class Metrics extends React.Component {
   }
 
   specifyTimeframe(input, catg) {
-    console.log("specifyTimeframe");
     if (input === "Custom") {
       this.setState({ timeFrame: input });
     } else {
@@ -298,13 +291,12 @@ class Metrics extends React.Component {
           });
         })
         .catch((err) => {
-          console.log("specifyTimeframe ERR", err);
+          console.error("specifyTimeframe ERR", err);
         });
     }
   }
 
   timeUpdated(input) {
-    console.log("timeUpdated");
     if (this.state.category === "All") {
       axios
         .get("/completedTasks", {
@@ -378,7 +370,7 @@ class Metrics extends React.Component {
           this.setState({ categoriesANDcolor, categories, allData, totalTime });
         })
         .catch((err) => {
-          console.log("timeUpdated ERR", err);
+          console.error("timeUpdated ERR", err);
         });
     } else {
       this.specifyCategory(input, this.state.timeFrame);
@@ -386,15 +378,10 @@ class Metrics extends React.Component {
   }
 
   customStartDate(input) {
-    console.log("customStartDate");
-    // console.log("star", input);
     this.setState({ customStartDate: input });
   }
 
   customEndDateAndSearch(customEndDate, catg) {
-    console.log("customEndDateAndSearch");
-    // console.log("end", customEndDate, catg); // upon last input, seacxrh db
-
     axios
       .get("/completedTasks", {
         params: {
@@ -474,25 +461,12 @@ class Metrics extends React.Component {
         });
       })
       .catch((err) => {
-        console.log("customEndDateAndSearch ERR", err);
+        console.error("customEndDateAndSearch ERR", err);
       });
   }
 
   printDocument() {
-    // console.log("printDocument");
     const printable = document.getElementById("Print");
-    // html2canvas(printable, {
-    //   scale: 1,
-    // })
-    //   .then((canvas) => {
-    //     const imgData = canvas.toDataURL("image/png");
-    //     const pdf = new jsPDF();
-    //     pdf.addImage(imgData, "JPEG", 0, 0);
-    //     pdf.save(`${this.state.timeFrame}_report.pdf`);
-    //   })
-    //   .catch((err) => {
-    //     console.log("printDocument ERR", err);
-    //   });
 
     html2canvas(printable, {
       useCORS: true,
@@ -515,13 +489,12 @@ class Metrics extends React.Component {
       const marginY = (pageHeight - canvasHeight) / 2;
 
       doc.addImage(image, "JPEG", marginX, marginY, canvasWidth, canvasHeight);
-      // doc.output("dataurlnewwindow");
+
       doc.save(`${this.state.timeFrame}_report.pdf`);
     });
   }
 
   render() {
-    // console.log("test", this.state);
     return (
       <div id="Print">
         <br></br>
