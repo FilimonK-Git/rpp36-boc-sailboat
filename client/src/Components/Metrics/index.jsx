@@ -184,9 +184,8 @@ class Metrics extends React.Component {
         let totalTime = this.secondsToHms(catgDurations.totalTimeSpent);
 
         this.setState({
-          allData, // commented out above, added here
+          allData,
           categoriesANDcolor,
-          // categories, //: sortedCatg,
           category: input,
           timeFrame: timeR,
           totalTime,
@@ -202,7 +201,6 @@ class Metrics extends React.Component {
     let h = Math.floor(d / 3600);
     let m = Math.floor((d % 3600) / 60);
     let s = Math.floor((d % 3600) % 60);
-
     let hDisplay = h > 0 ? h + (h == 1 ? " hour " : " hours ") : "";
     let mDisplay = m > 0 ? m + (m == 1 ? " minute " : " minutes ") : "";
     let sDisplay = s > 0 ? s + (s == 1 ? " second" : " seconds") : "";
@@ -533,7 +531,6 @@ class Metrics extends React.Component {
             </select>
           </div>
           {this.state.timeFrame === "Custom" ? (
-            // <BasicDateTimePicker />
             <div>
               <div>
                 <label htmlFor="customFrom">From: </label>
@@ -562,7 +559,6 @@ class Metrics extends React.Component {
               </div>
             </div>
           ) : (
-            // <div>mm</div>
             ""
           )}
           <br></br>
@@ -587,7 +583,6 @@ class Metrics extends React.Component {
         </div>
         <br></br>
 
-        {/* <hr></hr> */}
         {this.state.allData.length === 0 ? (
           <div>
             <img
@@ -610,8 +605,6 @@ class Metrics extends React.Component {
                 data={this.state.allData}
                 timeUpdated={this.timeUpdated.bind(this)}
               />
-
-              {/* <hr></hr> */}
             </div>
             <br></br>
             <div className="reportPDFbtnDIV">
