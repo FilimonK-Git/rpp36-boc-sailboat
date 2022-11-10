@@ -1,6 +1,6 @@
 # Encompass
-This was a month long project where our team completed an MVP full stack application for a new client that we worked with closely
-> Interact, create tasks, and form your calendar however it suits your needs!
+A mobile-first productivity app that allows users to manage their tasks and appointments. 
+> Now you can - create tasks, make appointments, update and share your calendar and, evaluate your productivity ... all in one app!
 
 ## Tech Stack
 
@@ -28,8 +28,8 @@ This was a month long project where our team completed an MVP full stack applica
 </div>
 
 ## Contributors
-- [Othniel Chan](https://github.com/othnielhr)
 - [Filimon Kiros](https://github.com/FilimonK-Git)
+- [Othniel Chan](https://github.com/othnielhr)
 - [David Lim](https://github.com/davidlim7223)
 - [Michael Manzo](https://github.com/mpmanzo)
 - [Jason Novacovici](https://github.com/JNovacovici)
@@ -37,9 +37,10 @@ This was a month long project where our team completed an MVP full stack applica
 - [Joanna Zhang](https://github.com/lyonqingmango)
 
 ## What Encompass is all about
-- Gives the user the ability to create, track, and connect the combination of tasks and utilize a calendar to display tasks
-- More customization in colors and categories
-- Detailed metrics about the tasks you do from preset timelines, to creating your own time period
+* A productivity app that enables users to manage their time and activities through:
+  * Customizable calendar with drag, drop and share features 
+  * Seamless integration of new events and tracking similar categories 
+  * Detailed and customizable report to boost productivity
 
 ![landingPage](https://media.giphy.com/media/D1aIZBiOWyM9gdNhjM/giphy.gif)
 
@@ -53,13 +54,13 @@ This was a month long project where our team completed an MVP full stack applica
 7. [Metrics](#metrics)
 
 ### Authentication
-> Simple Log-in & Sign-up, asking for little information and using encryption to protect the users information that is used to create an account
+> Simple and encrypted Log-in & Sign-up
 
 <Details>
 
-* Leveraging Postgres' hashing and salting to protect user information
-* Offer cookies / localstorage to keep user logged in
-* Using native alerts to inform the user when their information is incorrect 
+* Leverages Postgres' hashing and salting to protect user information
+* Offers cookies / localstorage to keep user logged in
+* Uses native alerts to inform the user upon incorrect credential entry 
 
 </Details>
  
@@ -140,7 +141,7 @@ This was a month long project where our team completed an MVP full stack applica
 
 * Offers a downloadable (PDF) report metrics of completed tasks
 * Customizable by time frame and categories list
-* Descriptive text indicating the number of tasks completed, including aggreate duration taken
+* Descriptive text indicating the number of tasks completed, including aggreate duration
 * Pie chart displays time percentage allocated per category (chart legend clickable to add/remove a category from chart)
 * Upon a specific category elected, bar chart displays time (in min) taken to complete each task in the category
 * A sortable table showing a list of completed tasks with an editable duration's column (user can update the time spent on tasks)
